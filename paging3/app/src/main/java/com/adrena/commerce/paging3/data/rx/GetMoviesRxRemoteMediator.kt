@@ -13,6 +13,14 @@ import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
 import java.util.*
 
+/**
+ * 使用RxJava加载本地分页数据源,如果没有本地数据,则网络加载
+ * @property service API接口
+ * @property database 本地数据库
+ * @property apiKey 请求api_key
+ * @property mapper 包装数据
+ * @property locale 本地环境
+ */
 @OptIn(ExperimentalPagingApi::class)
 class GetMoviesRxRemoteMediator(
     private val service: TMDBService,
@@ -22,6 +30,12 @@ class GetMoviesRxRemoteMediator(
     private val locale: Locale
 ) : RxRemoteMediator<Int, Movies.Movie>() {
 
+    /**
+     * 分页加载
+     * @param loadType
+     * @param state
+     * @return
+     */
     override fun loadSingle(
         loadType: LoadType,
         state: PagingState<Int, Movies.Movie>
@@ -56,7 +70,8 @@ class GetMoviesRxRemoteMediator(
                     service.popularMovieRx(
                         apiKey = apiKey,
                         page = page,
-                        language = locale.language)
+                        language = locale.language
+                    )
                         .map { mapper.transform(it, locale) }
                         .map { insertToDb(page, loadType, it) }
                         .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it.endOfPage) }
@@ -68,6 +83,13 @@ class GetMoviesRxRemoteMediator(
 
     }
 
+    /**
+     * 更新DB数据库
+     * @param page
+     * @param loadType
+     * @param data
+     * @return
+     */
     @Suppress("DEPRECATION")
     private fun insertToDb(page: Int, loadType: LoadType, data: Movies): Movies {
         database.beginTransaction()

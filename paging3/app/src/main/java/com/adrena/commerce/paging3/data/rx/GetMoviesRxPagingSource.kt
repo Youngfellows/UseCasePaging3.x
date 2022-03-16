@@ -8,6 +8,13 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
+/**
+ * 使用rxjava异步加载分页数据源
+ * @property service
+ * @property apiKey
+ * @property mapper
+ * @property locale
+ */
 class GetMoviesRxPagingSource(
     private val service: TMDBService,
     private val apiKey: String,
@@ -15,6 +22,11 @@ class GetMoviesRxPagingSource(
     private val locale: Locale
 ) : RxPagingSource<Int, Movies.Movie>() {
 
+    /**
+     * 分页加载
+     * @param params
+     * @return
+     */
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Movies.Movie>> {
         val position = params.key ?: 1
 

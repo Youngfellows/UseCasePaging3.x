@@ -12,6 +12,14 @@ import com.adrena.commerce.paging3.data.model.MoviesMapper
 import java.io.InvalidObjectException
 import java.util.*
 
+/**
+ * 本地数据源
+ * @property service API接口
+ * @property database 数据库
+ * @property apiKey 请求api_key
+ * @property mapper 包装数据
+ * @property locale 本地环境
+ */
 @OptIn(ExperimentalPagingApi::class)
 class GetMoviesFlowRemoteMediator(
     private val service: TMDBService,
@@ -21,6 +29,12 @@ class GetMoviesFlowRemoteMediator(
     private val locale: Locale
 ) : RemoteMediator<Int, Movies.Movie>() {
 
+    /**
+     * 本地分页加载
+     * @param loadType
+     * @param state
+     * @return
+     */
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Movies.Movie>
@@ -57,7 +71,8 @@ class GetMoviesFlowRemoteMediator(
             val response = service.moviesFlow(
                 apiKey = apiKey,
                 page = page,
-                language = locale.language)
+                language = locale.language
+            )
 
             val data = mapper.transform(response, locale)
 
@@ -70,7 +85,11 @@ class GetMoviesFlowRemoteMediator(
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (data.endOfPage) null else page + 1
                 val keys = data.movies.map {
-                    Movies.MovieRemoteKeys(movieId = it.movieId, prevKey = prevKey, nextKey = nextKey)
+                    Movies.MovieRemoteKeys(
+                        movieId = it.movieId,
+                        prevKey = prevKey,
+                        nextKey = nextKey
+                    )
                 }
                 database.movieRemoteKeysFlowDao().insertAll(keys)
                 database.moviesFlowDao().insertAll(data.movies)

@@ -11,13 +11,17 @@ import com.adrena.commerce.paging3.data.db.rx.MovieRemoteKeysRxDao
 import com.adrena.commerce.paging3.data.db.rx.MovieRxDao
 import com.adrena.commerce.paging3.data.model.Movies
 
+/**
+ * 本地数据库
+ */
 @Database(
     entities = [Movies.Movie::class, Movies.MovieRemoteKeys::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class MovieDatabase: RoomDatabase() {
+abstract class MovieDatabase : RoomDatabase() {
+
     abstract fun moviesFlowDao(): MovieFlowDao
     abstract fun movieRemoteKeysFlowDao(): MovieRemoteKeysFlowDao
 
@@ -25,23 +29,27 @@ abstract class MovieDatabase: RoomDatabase() {
     abstract fun movieRemoteKeysRxDao(): MovieRemoteKeysRxDao
 
     companion object {
+
         @Volatile
         private var INSTANCE: MovieDatabase? = null
 
-        fun getInstance(context: Context): MovieDatabase =
-            INSTANCE
-                ?: synchronized(this) {
-                    INSTANCE
-                        ?: buildDatabase(
-                            context
-                        ).also {
-                            INSTANCE = it
-                        }
-                }
+        /**
+         * 单例
+         * @param context
+         * @return
+         */
+        fun getInstance(context: Context): MovieDatabase = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: buildDatabase(
+                context
+            ).also {
+                INSTANCE = it
+            }
+        }
 
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context.applicationContext,
-                MovieDatabase::class.java, "TMDB.db")
-                .build()
+            Room.databaseBuilder(
+                context.applicationContext,
+                MovieDatabase::class.java, "TMDB.db"
+            ).build()
     }
 }

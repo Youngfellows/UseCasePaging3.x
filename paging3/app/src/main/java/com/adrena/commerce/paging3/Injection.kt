@@ -24,6 +24,11 @@ object Injection {
 
     fun provideLocale(): Locale = Locale.getDefault()
 
+    /**
+     * 本地数据库
+     * @param context
+     * @return
+     */
     fun provideDatabase(context: Context): MovieDatabase = MovieDatabase.getInstance(context)
 
     /**
@@ -51,61 +56,75 @@ object Injection {
         )
     }
 
+    /**
+     * 注入ViewModel,ViewModel关联对象,本地数据源和网络数据源
+     * @param context
+     * @return
+     */
     fun provideFlowRemoteViewModel(context: Context): ViewModelProvider.Factory {
-        val remoteMediator =
-            GetMoviesFlowRemoteMediator(
-                service = TMDBService.create(),
-                database = provideDatabase(context),
-                apiKey = context.getString(R.string.api_key),
-                mapper = MoviesMapper(),
-                locale = provideLocale()
-            )
 
-        val repository =
-            GetMoviesFlowRemoteRepositoryImpl(
-                database = provideDatabase(context),
-                remoteMediator = remoteMediator
-            )
+        //本地数据源
+        val remoteMediator = GetMoviesFlowRemoteMediator(
+            service = TMDBService.create(),
+            database = provideDatabase(context),
+            apiKey = context.getString(R.string.api_key),
+            mapper = MoviesMapper(),
+            locale = provideLocale()
+        )
+
+        val repository = GetMoviesFlowRemoteRepositoryImpl(
+            database = provideDatabase(context),
+            remoteMediator = remoteMediator
+        )
 
         return GetMoviesFlowViewModelFactory(
             repository
         )
     }
 
+    /**
+     * 注入ViewModel,ViewModel关联对象,分页数据源
+     * @param context
+     * @return
+     */
     fun provideRxViewModel(context: Context): ViewModelProvider.Factory {
-        val pagingSource =
-            GetMoviesRxPagingSource(
-                service = TMDBService.create(),
-                apiKey = context.getString(R.string.api_key),
-                mapper = MoviesMapper(),
-                locale = provideLocale()
-            )
+        //使用rxjava异步加载分页数据源
+        val pagingSource = GetMoviesRxPagingSource(
+            service = TMDBService.create(),
+            apiKey = context.getString(R.string.api_key),
+            mapper = MoviesMapper(),
+            locale = provideLocale()
+        )
 
-        val repository =
-            GetMoviesRxRepositoryImpl(
-                pagingSource = pagingSource
-            )
+        val repository = GetMoviesRxRepositoryImpl(
+            pagingSource = pagingSource
+        )
 
         return GetMoviesRxViewModelFactory(
             repository
         )
     }
 
-    fun provideRxRemoteViewModel(context: Context): ViewModelProvider.Factory {
-        val remoteMediator =
-            GetMoviesRxRemoteMediator(
-                service = TMDBService.create(),
-                database = provideDatabase(context),
-                apiKey = context.getString(R.string.api_key),
-                mapper = MoviesMapper(),
-                locale = provideLocale()
-            )
 
-        val repository =
-            GetMoviesRxRemoteRepositoryImpl(
-                database = provideDatabase(context),
-                remoteMediator = remoteMediator
-            )
+    /**
+     * 注入ViewModel,ViewModel关联对象,分页数据源
+     * @param context
+     * @return
+     */
+    fun provideRxRemoteViewModel(context: Context): ViewModelProvider.Factory {
+
+        val remoteMediator = GetMoviesRxRemoteMediator(
+            service = TMDBService.create(),
+            database = provideDatabase(context),
+            apiKey = context.getString(R.string.api_key),
+            mapper = MoviesMapper(),
+            locale = provideLocale()
+        )
+
+        val repository = GetMoviesRxRemoteRepositoryImpl(
+            database = provideDatabase(context),
+            remoteMediator = remoteMediator
+        )
 
         return GetMoviesRxViewModelFactory(
             repository
