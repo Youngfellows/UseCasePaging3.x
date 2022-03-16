@@ -26,9 +26,18 @@ package com.training.pagingcompose.data.repository
 
 import com.training.pagingcompose.data.network.MovieApi
 
+/**
+ * 电影模块Repository
+ * @property movieApi API接口
+ */
 class MovieRepository(
     private val movieApi: MovieApi
 ) {
+    /**
+     * 获取热门电影
+     * @param pageNumber 第x页
+     * @return
+     */
     suspend fun getPopularMovies(pageNumber: Int) =
         movieApi.getPopularMovies(pageNumber)
 }

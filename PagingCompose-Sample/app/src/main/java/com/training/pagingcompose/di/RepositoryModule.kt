@@ -28,10 +28,19 @@ import com.training.pagingcompose.data.network.MovieApi
 import com.training.pagingcompose.data.repository.MovieRepository
 import org.koin.dsl.module
 
+/**
+ * Repository模块
+ */
+
 val repositoryModule = module {
     single { createRepository(get()) }
 }
 
+/**
+ * 创建Repository模块
+ * @param movieApi API接口
+ * @return
+ */
 fun createRepository(
     movieApi: MovieApi
-) : MovieRepository = MovieRepository(movieApi)
+): MovieRepository = MovieRepository(movieApi)

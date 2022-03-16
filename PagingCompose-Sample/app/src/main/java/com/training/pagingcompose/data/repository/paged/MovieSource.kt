@@ -28,21 +28,39 @@ import androidx.paging.PagingSource
 import com.training.pagingcompose.data.repository.MovieRepository
 import com.training.pagingcompose.model.Movie
 
+/**
+ * 提供分页数据的数据源
+ * @property movieRepository 真正执行任务的Repository
+ */
 class MovieSource(
     private val movieRepository: MovieRepository
 ) : PagingSource<Int, Movie>() {
 
+    /**
+     * 分页加载
+     * @param params
+     * @return
+     */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         return try {
             val nextPage = params.key ?: 1
             val movieListResponse = movieRepository.getPopularMovies(nextPage)
 
-            LoadResult.Page(
-                data = movieListResponse.results,
-                prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = movieListResponse.page.plus(1)
-            )
+            if (movieListResponse != null) {
+                LoadResult.Page(
+                    data = movieListResponse.results,
+                    prevKey = if (nextPage == 1) null else nextPage - 1,
+                    nextKey = movieListResponse.page.plus(1)
+                )
+            } else {
+                LoadResult.Page(
+                    data = emptyList(),
+                    prevKey = null,
+                    nextKey = null
+                )
+            }
         } catch (e: Exception) {
+            e.printStackTrace()
             LoadResult.Error(e)
         }
     }

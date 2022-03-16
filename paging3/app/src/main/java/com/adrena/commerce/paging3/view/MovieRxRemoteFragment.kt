@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.adrena.commerce.paging3.R
-import com.adrena.commerce.paging3.data.Injection
+import com.adrena.commerce.paging3.Injection
 import com.adrena.commerce.paging3.databinding.FragmentMovieListBinding
 import com.adrena.commerce.paging3.view.rx.MoviesRxAdapter
 import com.adrena.commerce.paging3.view.viewmodel.rx.GetMoviesRxViewModel

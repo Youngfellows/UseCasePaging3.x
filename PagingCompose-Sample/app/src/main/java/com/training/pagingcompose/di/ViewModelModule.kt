@@ -28,6 +28,9 @@ import com.training.pagingcompose.ui.screen.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+/**
+ * 被观察数据ViewModel模块
+ */
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }
 }

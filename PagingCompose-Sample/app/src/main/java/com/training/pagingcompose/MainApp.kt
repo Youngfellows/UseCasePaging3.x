@@ -36,6 +36,7 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        //初始化依赖注入框架
         startKoin {
             androidContext(this@MainApp)
             modules(listOf(networkModule, repositoryModule, viewModelModule))

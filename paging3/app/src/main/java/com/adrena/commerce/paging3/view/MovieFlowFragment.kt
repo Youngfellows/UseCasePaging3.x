@@ -2,7 +2,6 @@ package com.adrena.commerce.paging3.view
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adrena.commerce.paging3.R
-import com.adrena.commerce.paging3.data.Injection
+import com.adrena.commerce.paging3.Injection
 import com.adrena.commerce.paging3.databinding.FragmentMovieListBinding
 import com.adrena.commerce.paging3.view.flow.MoviesFlowAdapter
 import com.adrena.commerce.paging3.view.viewmodel.flow.GetMoviesFlowViewModel

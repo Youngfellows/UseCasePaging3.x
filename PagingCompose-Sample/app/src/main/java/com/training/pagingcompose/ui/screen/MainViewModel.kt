@@ -33,10 +33,21 @@ import com.training.pagingcompose.data.repository.paged.MovieSource
 import com.training.pagingcompose.model.Movie
 import kotlinx.coroutines.flow.Flow
 
+
+/**
+ * 被观察数据ViewModel模块
+ * @constructor
+ * TODO
+ *
+ * @param movieRepository 真正执行任务的Repository
+ */
 class MainViewModel(
     movieRepository: MovieRepository
 ) : ViewModel() {
 
+    /**
+     * 被观察分页列表
+     */
     val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 20)) {
         MovieSource(movieRepository)
     }.flow

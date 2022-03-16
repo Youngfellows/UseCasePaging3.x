@@ -26,6 +26,13 @@ package com.training.pagingcompose.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * 电影列表响应实体
+ * @property totalPages 总页数
+ * @property totalResults 总共多少条数据
+ * @property results 电影列表
+ * @property page 当前页
+ */
 data class MovieListResponse(
     @SerializedName("total_pages") val totalPages: Int,
     @SerializedName("total_results") val totalResults: Int,

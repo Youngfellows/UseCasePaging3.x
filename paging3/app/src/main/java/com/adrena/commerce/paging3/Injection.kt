@@ -1,8 +1,8 @@
-package com.adrena.commerce.paging3.data
+package com.adrena.commerce.paging3
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.adrena.commerce.paging3.R
+import com.adrena.commerce.paging3.data.TMDBService
 import com.adrena.commerce.paging3.data.db.MovieDatabase
 import com.adrena.commerce.paging3.data.flow.GetMoviesFlowPagingSource
 import com.adrena.commerce.paging3.data.flow.GetMoviesFlowRemoteMediator
