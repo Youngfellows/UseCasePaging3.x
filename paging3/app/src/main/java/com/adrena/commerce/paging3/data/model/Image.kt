@@ -5,8 +5,13 @@ import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * 图片资源实体
+ * @property url 资源地址
+ */
 @Parcelize
-data class Image(val url: String): Parcelable {
+data class Image(val url: String) : Parcelable {
+
     companion object {
         private const val PATH = "https://image.tmdb.org/t/p"
     }

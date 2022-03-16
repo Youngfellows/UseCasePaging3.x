@@ -17,23 +17,34 @@ import com.adrena.commerce.paging3.view.viewmodel.flow.GetMoviesFlowViewModelFac
 import com.adrena.commerce.paging3.view.viewmodel.rx.GetMoviesRxViewModelFactory
 import java.util.*
 
+/**
+ * 注入对象
+ */
 object Injection {
+
     fun provideLocale(): Locale = Locale.getDefault()
+
     fun provideDatabase(context: Context): MovieDatabase = MovieDatabase.getInstance(context)
 
+    /**
+     * 注入ViewModel,ViewModel关联对象
+     * @param context
+     * @return
+     */
     fun provideFlowViewModel(context: Context): ViewModelProvider.Factory {
-        val pagingSource =
-            GetMoviesFlowPagingSource(
-                service = TMDBService.create(),
-                apiKey = context.getString(R.string.api_key),
-                mapper = MoviesMapper(),
-                locale = provideLocale()
-            )
 
-        val repository =
-            GetMoviesFlowRepositoryImpl(
-                pagingSource = pagingSource
-            )
+        //分页数据源
+        val pagingSource = GetMoviesFlowPagingSource(
+            service = TMDBService.create(),
+            apiKey = context.getString(R.string.api_key),
+            mapper = MoviesMapper(),
+            locale = provideLocale()
+        )
+
+        //获取电影被观察分页数据流
+        val repository = GetMoviesFlowRepositoryImpl(
+            pagingSource = pagingSource
+        )
 
         return GetMoviesFlowViewModelFactory(
             repository

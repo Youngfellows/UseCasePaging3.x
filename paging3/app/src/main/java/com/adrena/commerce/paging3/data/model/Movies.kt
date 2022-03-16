@@ -7,6 +7,12 @@ import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+/**
+ * 电影列表
+ * @property total 总页数
+ * @property page 当前页
+ * @property movies 电影列表
+ */
 @Parcelize
 data class Movies(
     val total: Int = 0,

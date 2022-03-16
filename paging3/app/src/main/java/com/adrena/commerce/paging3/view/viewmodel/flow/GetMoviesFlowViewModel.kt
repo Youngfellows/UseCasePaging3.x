@@ -11,12 +11,26 @@ import com.adrena.commerce.paging3.view.model.UiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+
+/**
+ * 携带被观察数据的ViewModel
+ * @property repository 电影被观察分页数据流
+ */
 class GetMoviesFlowViewModel(private val repository: GetMoviesFlowRepository) : ViewModel() {
 
+    /**
+     * 获取电影被观察分页数据流
+     * @return
+     */
     fun getFavoriteMovies(): Flow<PagingData<UiModel>> {
         return repository
             .getMovies()
-            .map { pagingData -> pagingData.map { UiModel.MovieItem(it) } }
+            .map { pagingData ->
+                //数据转化
+                pagingData.map {
+                    UiModel.MovieItem(it)
+                }
+            }
             .map {
                 it.insertSeparators<UiModel.MovieItem, UiModel> { before, after ->
                     if (after == null) {

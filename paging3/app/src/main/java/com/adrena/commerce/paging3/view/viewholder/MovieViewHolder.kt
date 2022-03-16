@@ -10,9 +10,23 @@ import com.adrena.commerce.paging3.databinding.MovieItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MovieViewHolder(private val binding: MovieItemBinding, private val locale: Locale) : RecyclerView.ViewHolder(binding.root) {
+/**
+ * 电影类型ViewHolder
+ * @property binding
+ * @property locale
+ */
+class MovieViewHolder(private val binding: MovieItemBinding, private val locale: Locale) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    /**
+     * 时间日期格式化
+     */
     private val mDateFormatter = SimpleDateFormat("dd MMM yyyy", locale)
 
+    /**
+     * 为视图绑定数据
+     * @param movie 电影数据
+     */
     fun bind(movie: Movies.Movie) {
         with(movie) {
             binding.title.text = originalTitle
@@ -24,9 +38,11 @@ class MovieViewHolder(private val binding: MovieItemBinding, private val locale:
     }
 
     companion object {
+
         fun create(parent: ViewGroup, locale: Locale): MovieViewHolder {
+
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.movie_item,  parent,false)
+                .inflate(R.layout.movie_item, parent, false)
 
             val binding = MovieItemBinding.bind(view)
 

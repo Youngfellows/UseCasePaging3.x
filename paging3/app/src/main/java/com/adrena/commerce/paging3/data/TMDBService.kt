@@ -10,6 +10,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * API接口
+ */
 interface TMDBService {
 
     @GET("discover/movie?sort_by=original_title.asc&region=ID")
@@ -17,21 +20,30 @@ interface TMDBService {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int,
         @Query("language") language: String
-    ) : MoviesResponse
+    ): MoviesResponse
 
     @GET("movie/popular")
     fun popularMovieRx(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int,
         @Query("language") language: String
-    ) : Single<MoviesResponse>
+    ): Single<MoviesResponse>
 
     companion object {
+
+        /**
+         * 请求Host
+         */
         private const val BASE_URL = "https://api.themoviedb.org/3/"
 
+        /**
+         * 获取API接口
+         * @return
+         */
         fun create(): TMDBService {
-            val logger = HttpLoggingInterceptor()
-            logger.level = HttpLoggingInterceptor.Level.BASIC
+            val logger = HttpLoggingInterceptor(HttpLogger())
+            //logger.level = HttpLoggingInterceptor.Level.BASIC
+            logger.level = HttpLoggingInterceptor.Level.BODY
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

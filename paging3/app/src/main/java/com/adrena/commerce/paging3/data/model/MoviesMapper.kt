@@ -1,10 +1,21 @@
 package com.adrena.commerce.paging3.data.model
 
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 数据转化
+ */
 class MoviesMapper {
 
+    /**
+     * 电影数据转化
+     * @param response 响应结果
+     * @param locale
+     * @return 返回包装的电影数据
+     */
+    @SuppressLint("NewApi")
     fun transform(response: MoviesResponse, locale: Locale): Movies {
         return with(response) {
             Movies(
