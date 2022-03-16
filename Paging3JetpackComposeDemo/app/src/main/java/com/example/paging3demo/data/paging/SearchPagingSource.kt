@@ -6,21 +6,32 @@ import com.example.paging3demo.data.remote.UnsplashApi
 import com.example.paging3demo.model.UnsplashImage
 import com.example.paging3demo.util.Constants.ITEMS_PER_PAGE
 
+/**
+ * 网络分页数据源 - 获取关键字查询分页图片
+ * @property unsplashApi API接口
+ * @property query 查询关键字
+ */
 class SearchPagingSource(
     private val unsplashApi: UnsplashApi,
     private val query: String
 ) : PagingSource<Int, UnsplashImage>() {
 
+    /**
+     * 分页查询
+     * @param params
+     * @return
+     */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashImage> {
         val currentPage = params.key ?: 1
         return try {
             val response = unsplashApi.searchImages(query = query, perPage = ITEMS_PER_PAGE)
             val endOfPaginationReached = response.images.isEmpty()
             if (response.images.isNotEmpty()) {
+                //提交数据给PageList
                 LoadResult.Page(
                     data = response.images,
-                    prevKey = if (currentPage == 1) null else currentPage - 1,
-                    nextKey = if (endOfPaginationReached) null else currentPage + 1
+                    prevKey = if (currentPage == 1) null else currentPage - 1,//上一页
+                    nextKey = if (endOfPaginationReached) null else currentPage + 1//下一页
                 )
             } else {
                 LoadResult.Page(
@@ -37,5 +48,4 @@ class SearchPagingSource(
     override fun getRefreshKey(state: PagingState<Int, UnsplashImage>): Int? {
         return state.anchorPosition
     }
-
 }

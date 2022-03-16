@@ -14,22 +14,40 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * 查询图片被观察数据的ViewModel
+ * @property repository 正在执行任务的Repository
+ */
 @ExperimentalPagingApi
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
+    /**
+     * 被观察数据-查询关键字
+     */
     private val _searchQuery = mutableStateOf("")
     val searchQuery = _searchQuery
 
+    /**
+     * 被观察数据-分页查询数据流
+     */
     private val _searchedImages = MutableStateFlow<PagingData<UnsplashImage>>(PagingData.empty())
     val searchedImages = _searchedImages
 
+    /**
+     * 设置查询关键字
+     * @param query 关键字
+     */
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
     }
 
+    /**
+     * 异步分页查询-使用协程
+     * @param query 查询关键字
+     */
     fun searchHeroes(query: String) {
         viewModelScope.launch {
             repository.searchImages(query = query).cachedIn(viewModelScope).collect {

@@ -11,13 +11,20 @@ import com.example.paging3demo.model.UnsplashImage
 import com.example.paging3demo.model.UnsplashRemoteKeys
 import com.example.paging3demo.util.Constants.ITEMS_PER_PAGE
 
+/**
+ * 本地数据源
+ * @property unsplashApi API接口
+ * @property unsplashDatabase 本地DB缓存
+ */
 @ExperimentalPagingApi
 class UnsplashRemoteMediator(
     private val unsplashApi: UnsplashApi,
     private val unsplashDatabase: UnsplashDatabase
 ) : RemoteMediator<Int, UnsplashImage>() {
 
+    //unsplash_image_table表操作DAO
     private val unsplashImageDao = unsplashDatabase.unsplashImageDao()
+    //unsplash_remote_keys_table表操作DAO
     private val unsplashRemoteKeysDao = unsplashDatabase.unsplashRemoteKeysDao()
 
     override suspend fun load(

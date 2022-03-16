@@ -6,6 +6,13 @@ import androidx.room.PrimaryKey
 import com.example.paging3demo.util.Constants.UNSPLASH_IMAGE_TABLE
 import kotlinx.serialization.Serializable
 
+/**
+ * 图片实体,UNSPLASH_IMAGE_TABLE表
+ * @property id
+ * @property urls
+ * @property likes
+ * @property user
+ */
 @Serializable
 @Entity(tableName = UNSPLASH_IMAGE_TABLE)
 data class UnsplashImage(
